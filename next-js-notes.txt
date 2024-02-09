@@ -1,0 +1,90 @@
+Node 20 or higher, can check with command line 'node -v' , need this for one of the file types we use
+
+npx create-next-app@latest    , use this to create your app and say yes to all prompts except the custom
+
+
+Packages to install at beginning of project
+
+  npm i prisma @prisma/client @vercel/blob react-draft-wysiwyg markdown-draft-js react-markdown nanoid date-fns @clerk/nextjs
+
+
+  now for dev dependencies 
+
+  npm i --save-dev @types/markdown-draft-js @types/react-draft-wysiwyg prettier eslint-config-prettier prettier-plugin-tailwindcss
+
+
+  configuration 
+
+  make sure you have official Tailwind CSS IntelliSense extension from Tailwind Labs in VsCode
+
+  then file-preferences-settings for vscode , search 'files assoc' and add an item that has '*.css' with value 'tailwindcss' , 
+  this ensures we get tailwind support inside css files
+
+  now in settings search quick suggestions , make sure it is 'other - on ' , 'comments - off', 'strings - on'
+
+  add this to a new file in the root of your project called 'prettier.config.js' exact name, and paste the code in 
+  module.exports = {
+    plugins: ['prettier-plugin-tailwindcss'],
+  }
+
+  next go into the .eslintrc.json file and change the value to an array and add a second string that says  "prettier"
+  {
+    "extends": ["next/core-web-vitals", "prettier"]
+  }
+
+  install vscode Prettier code formatter extension by Prettier.io
+
+  go to settings and search 'default formatter' and set it to Prettier
+
+  install Prisma extension from prisma.io
+
+  ui.shadcn.com/docs/installation/next    good component library, follow instructions to install run the CLI, npx shadcn-ui@latest init
+  answer yes to typescript
+  default style
+  Slate
+  yes
+
+  npx shadcn-ui@latest add button to add buttons with shadcn
+
+  npx shadcn-ui@latest add input
+
+  npx shadcn-ui@latest add form
+
+
+Set up Postgre Database, blob storage and prisma
+
+  npx prisma init
+  
+  go to .gitignore and add ".env" to the end so it won't push your .env
+
+  go to Vercel.com and click storage in the dashboard and create a PostgreSQL Database
+  after naming and creating it go to the .env.local tab of the database and copy the credentials to the .env file in the project
+  then go to the prisma tab on vercel in ur database and copy it to the schema.prisma file and paste in the datasource db{yourinfohere}
+
+  now you can define your database in the schema.prisma file and create models 
+
+  Prisma will automatically convert the types into the correct Postgre types, normally you would create a table via a SQL command, but 
+  in prisma we do this by defining it in a schema file
+
+  in Postgre the naming convention for models is lower case so we can map the name at the end of our model to a different table name by typing 
+  @@map("yournamehere")
+
+  add this line
+  previewFeatures = ["fullTextSearch"]
+  to the generator client {}   , this way we can use postgre's full search text later to search for jobs
+
+  now in order to create this table in our database we open the command line and run "npx prisma db push" this will push it to the db we set up on vercel
+
+  now run 'npx prisma generate' to generate a prisma client from our new table , that we can then use in our code, 
+
+  create a prisma.ts file in lib folder for your prisma client, you can set this up by copying the code from 
+  prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices and copy it to paste in the prisma.ts
+  
+  now you can create a scripts folder in the root and add scripts that will then need to be added to the package.json these can be used to seed the database
+  then run the script with 'npm run seed' after adding it to package.json
+
+  our website doesn't have a ui yet but we can use prisma studio to see our data with 'npx prisma studio' then visit the localhost port to see our data
+
+  now to set up Vercel blob we can go to storage and create a blob storage , name it copy the one .env variable and make sure to put it in the .env
+
+  
